@@ -5,23 +5,22 @@
       :player1Wins="player1Wins"
       :player2Wins="player2Wins"
     ></Info>
+
     <section v-if="winner == 'x' && counter <= 9" class="tic-game__message">
-      <player-one></player-one>
-      <btn-continue @click="handleContinue"> </btn-continue>
+      <end-game> Player 1 Wins </end-game>
     </section>
+
     <section
       v-else-if="winner == 'o' && counter <= 9"
       class="tic-game__message"
     >
-      <player-two> </player-two>
-      <btn-continue @click="handleContinue"></btn-continue>
+      <end-game>Player 2 Wins </end-game>
     </section>
     <section
       v-else-if="winner == null && counter >= 9"
       class="tic-game__message"
     >
-      <player-drow> </player-drow>
-      <btn-continue @click="handleContinue"></btn-continue>
+      <end-game> It's Drow</end-game>
     </section>
 
     <section class="tic-game__container" v-else>
@@ -35,16 +34,23 @@
         ></Card>
       </div>
     </section>
+    <div class="text-center mt-5">
+      <button
+        v-if="
+          winner == 'x' || winner == 'o' || (winner == null && counter >= 9)
+        "
+        class="tic-game__btn-continue"
+        @click="handleContinue"
+      >
+        Continue
+      </button>
+    </div>
   </div>
 </template>
 <script>
 import Card from './card.vue';
 import Info from './info.vue';
-import PlayerOne from './PlayerOne.vue';
-import PlayerTwo from './PlayerTwo.vue';
-import PlayerDrow from './PlayerTwo.vue';
-import BtnContinue from './BtnContinue.vue';
-
+import EndGame from './EndGame.vue';
 export default {
   data() {
     return {
@@ -53,7 +59,7 @@ export default {
       player2Wins: 0,
 
       sqares: [
-        { id: 1, nameClass: 'ْ' },
+        { id: 1, nameClass: '' },
         { id: 2, nameClass: '' },
         { id: 3, nameClass: '' },
         { id: 4, nameClass: '' },
@@ -66,22 +72,23 @@ export default {
       xoarr: [],
       player: null,
       winner: null,
+      playWithComputer: true,
     };
   },
   components: {
     Card,
     Info,
-    PlayerOne,
-    PlayerTwo,
-    PlayerDrow,
-    BtnContinue,
+    EndGame,
   },
   methods: {
     addNameClass(id) {
-      this.playOnce(id);
-      this.counter % 2 == 0 ? (this.player = 'x') : (this.player = 'o');
-      this.checkWin(this.player);
-      this.counter++;
+      if (this.xoarr[id] === undefined) {
+        this.playOnce(id);
+        this.counter % 2 == 0 ? (this.player = 'x') : (this.player = 'o');
+        this.checkWin(this.player);
+        this.counter++;
+        console.log('xoarr', this.xoarr);
+      }
     },
     playOnce(id) {
       this.sqares = this.sqares.map((sqare) => {
@@ -155,7 +162,7 @@ export default {
   &__message {
     background-color: #000;
     color: orange;
-    padding: 80px 20px;
+    padding: 40px 20px;
     text-align: center;
     font-size: 2rem;
     font-weight: 600;

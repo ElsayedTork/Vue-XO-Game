@@ -1,5 +1,4 @@
 <template>
-  Hello From App
   <cards />
 </template>
 

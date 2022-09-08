@@ -1,5 +1,7 @@
 <template>
-  <div class="my-4">This Is Drow</div>
+  <div class="my-4">
+    <slot></slot>
+  </div>
 </template>
 <script>
 export default {};
