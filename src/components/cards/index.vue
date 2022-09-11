@@ -1,5 +1,19 @@
 <template>
   <div class="tic-game container">
+    <form @submit.prevent="playWith">
+      <label class="text-center">Yo Want To Play With</label>
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        v-model="playingWith"
+      >
+        <option value="Computer">With Computer</option>
+        <option value="Players">Two Player</option>
+      </select>
+      <div>
+        <button>confirm</button>
+      </div>
+    </form>
     <Info
       :counter="counter"
       :player1Wins="player1Wins"
@@ -29,7 +43,7 @@
           class="col-4"
           v-for="(sqare, index) in sqares"
           :key="index"
-          @click="addNameClass(index)"
+          @click="playGame(index)"
         >
           {{ sqare }}
         </div>
@@ -53,6 +67,7 @@ import Info from './info.vue';
 export default {
   data() {
     return {
+      playingWith: '',
       counter: 0,
       player1Wins: 0,
       player2Wins: 0,
@@ -60,13 +75,55 @@ export default {
       xoarr: [],
       player: null,
       winner: null,
-      playWithComputer: true,
+      randomNum: null,
+      endMatchPlayer1Wins: false,
     };
   },
   components: {
     Info,
   },
   methods: {
+    playWith() {
+      console.log(this.playingWith);
+    },
+    playGame(index) {
+      if (this.playingWith == 'Players') {
+        this.addNameClass(index);
+        console.log('Playersssss');
+      } else {
+        console.log('Computer ssss');
+        this.computerPlayer(index);
+      }
+    },
+    computerPlayer(index) {
+      if (this.xoarr[index] === undefined) {
+        this.counter % 2 == 0 ? (this.player = 'x') : (this.player = 'o');
+        this.playOnce(index);
+        this.checkWin(this.player);
+        this.counter++;
+        //computer turn
+        if (this.endMatchPlayer1Wins == false) {
+          this.player = this.player === 'x' ? 'o' : 'x';
+          this.randomNumber();
+          for (let i = 0; i < 6; i++) {
+            if (
+              this.xoarr[this.randomNum] == 'x' ||
+              this.xoarr[this.randomNum] == 'o'
+            ) {
+              this.randomNumber();
+            } else {
+              break;
+            }
+          }
+          console.log('this.randomNum', this.randomNum);
+          this.playOnce(this.randomNum);
+          // console.log('this.randomNum', this.randomNum);
+          this.checkWin(this.player);
+          this.counter++;
+          console.log(this.xoarr);
+        }
+      }
+    },
     addNameClass(index) {
       if (this.xoarr[index] === undefined) {
         this.counter % 2 == 0 ? (this.player = 'x') : (this.player = 'o');
@@ -117,6 +174,9 @@ export default {
         setTimeout(() => (this.winner = player), 700);
         player == 'x' ? this.player1Wins++ : this.player2Wins++;
       }
+      if (this.winner == 'x') {
+        this.endMatchPlayer1Wins = true;
+      }
     },
     handleContinue() {
       this.counter = 0;
@@ -125,7 +185,9 @@ export default {
       this.sqares = ['', '', '', '', '', '', '', '', ''];
       this.xoarr = [];
     },
-    handleComputerPlayer() {},
+    randomNumber() {
+      this.randomNum = Math.floor(Math.random() * 9);
+    },
   },
 };
 </script>
