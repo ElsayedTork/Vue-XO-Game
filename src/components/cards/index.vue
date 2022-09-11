@@ -7,20 +7,20 @@
     ></Info>
 
     <section v-if="winner == 'x' && counter <= 9" class="tic-game__message">
-      <end-game> Player 1 Wins </end-game>
+      <p>Player 1 Wins</p>
     </section>
 
     <section
       v-else-if="winner == 'o' && counter <= 9"
       class="tic-game__message"
     >
-      <end-game>Player 2 Wins </end-game>
+      <p>Player 2 Wins</p>
     </section>
     <section
       v-else-if="winner == null && counter >= 9"
       class="tic-game__message"
     >
-      <end-game> It's Drow</end-game>
+      <p>It's Drow</p>
     </section>
 
     <section class="tic-game__container" v-else>
@@ -125,6 +125,7 @@ export default {
       this.sqares = ['', '', '', '', '', '', '', '', ''];
       this.xoarr = [];
     },
+    handleComputerPlayer() {},
   },
 };
 </script>
