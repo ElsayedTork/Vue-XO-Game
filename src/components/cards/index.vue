@@ -25,13 +25,14 @@
 
     <section class="tic-game__container" v-else>
       <div class="row tic-game__container__cells">
-        <Card
+        <div
           class="col-4"
-          v-for="sqare in sqares"
-          :key="sqare.id"
-          @click="addNameClass(sqare.id)"
-          :sqare="sqare"
-        ></Card>
+          v-for="(sqare, index) in sqares"
+          :key="index"
+          @click="addNameClass(index)"
+        >
+          {{ sqare }}
+        </div>
       </div>
     </section>
     <div class="text-center mt-5">
@@ -48,27 +49,14 @@
   </div>
 </template>
 <script>
-import Card from './card.vue';
 import Info from './info.vue';
-import EndGame from './EndGame.vue';
 export default {
   data() {
     return {
       counter: 0,
       player1Wins: 0,
       player2Wins: 0,
-
-      sqares: [
-        { id: 1, nameClass: '' },
-        { id: 2, nameClass: '' },
-        { id: 3, nameClass: '' },
-        { id: 4, nameClass: '' },
-        { id: 5, nameClass: '' },
-        { id: 6, nameClass: '' },
-        { id: 7, nameClass: '' },
-        { id: 8, nameClass: '' },
-        { id: 9, nameClass: '' },
-      ],
+      sqares: ['', '', '', '', '', '', '', '', ''],
       xoarr: [],
       player: null,
       winner: null,
@@ -76,85 +64,88 @@ export default {
     };
   },
   components: {
-    Card,
     Info,
-    EndGame,
   },
   methods: {
-    addNameClass(id) {
-      if (this.xoarr[id] === undefined) {
-        this.playOnce(id);
+    addNameClass(index) {
+      if (this.xoarr[index] === undefined) {
         this.counter % 2 == 0 ? (this.player = 'x') : (this.player = 'o');
+
+        this.playOnce(index);
+        console.log('this.player', this.player);
         this.checkWin(this.player);
         this.counter++;
-        console.log('xoarr', this.xoarr);
+        console.log('this.xoarr', this.xoarr);
       }
     },
-    playOnce(id) {
-      this.sqares = this.sqares.map((sqare) => {
-        if (sqare.id === id && this.counter % 2 === 0) {
-          this.xoarr[id] = 'x';
-          return { ...sqare, nameClass: 'x' };
-        } else if (sqare.id === id && this.counter % 2 !== 0) {
-          this.xoarr[id] = 'o';
-          return { ...sqare, nameClass: 'o' };
-        } else {
-          return sqare;
-        }
-      });
+    playOnce(index) {
+      if (this.counter % 2 === 0) {
+        this.xoarr[index] = 'x';
+        this.sqares[index] = 'x';
+      } else if (this.counter % 2 !== 0) {
+        this.xoarr[index] = 'o';
+        this.sqares[index] = 'o';
+      }
+      console.log(this.sqares);
+      //  return sqare;
+      // }
     },
     checkWin(player) {
       if (
-        (this.xoarr[1] == player &&
-          this.xoarr[2] == player &&
-          this.xoarr[3] == player) ||
-        (this.xoarr[4] == player &&
-          this.xoarr[5] == player &&
-          this.xoarr[6] == player) ||
-        (this.xoarr[7] == player &&
-          this.xoarr[8] == player &&
-          this.xoarr[9] == player) ||
+        (this.xoarr[0] == player &&
+          this.xoarr[1] == player &&
+          this.xoarr[2] == player) ||
         (this.xoarr[3] == player &&
-          this.xoarr[6] == player &&
-          this.xoarr[9] == player) ||
-        (this.xoarr[1] == player &&
           this.xoarr[4] == player &&
-          this.xoarr[7] == player) ||
-        (this.xoarr[1] == player &&
-          this.xoarr[5] == player &&
-          this.xoarr[9] == player) ||
-        (this.xoarr[3] == player &&
-          this.xoarr[5] == player &&
-          this.xoarr[7] == player) ||
+          this.xoarr[5] == player) ||
+        (this.xoarr[6] == player &&
+          this.xoarr[7] == player &&
+          this.xoarr[8] == player) ||
         (this.xoarr[2] == player &&
           this.xoarr[5] == player &&
           this.xoarr[8] == player) ||
-        (this.xoarr[3] == player &&
-          this.xoarr[6] == player &&
-          this.xoarr[9] == player)
+        (this.xoarr[0] == player &&
+          this.xoarr[3] == player &&
+          this.xoarr[6] == player) ||
+        (this.xoarr[0] == player &&
+          this.xoarr[4] == player &&
+          this.xoarr[8] == player) ||
+        (this.xoarr[2] == player &&
+          this.xoarr[4] == player &&
+          this.xoarr[6] == player) ||
+        (this.xoarr[1] == player &&
+          this.xoarr[4] == player &&
+          this.xoarr[7] == player) ||
+        (this.xoarr[2] == player &&
+          this.xoarr[5] == player &&
+          this.xoarr[8] == player)
       ) {
+        console.log('win cheacked true');
         setTimeout(() => (this.winner = player), 1000);
         player == 'x' ? this.player1Wins++ : this.player2Wins++;
+      } else {
+        console.log('win cheacked false');
       }
     },
-    handleContinue() {
-      this.counter = 0;
-      this.player = null;
-      this.winner = null;
-      this.sqares = [
-        { id: 1, nameClass: 'ْ' },
-        { id: 2, nameClass: '' },
-        { id: 3, nameClass: '' },
-        { id: 4, nameClass: '' },
-        { id: 5, nameClass: '' },
-        { id: 6, nameClass: '' },
-        { id: 7, nameClass: '' },
-        { id: 8, nameClass: '' },
-        { id: 9, nameClass: '' },
-      ];
-      this.xoarr = [];
-    },
   },
+
+  // handleContinue() {
+  //   this.counter = 0;
+  //   this.player = null;
+  //   this.winner = null;
+  //   this.sqares = [
+  //     { id: 1, nameClass: 'ْ' },
+  //     { id: 2, nameClass: '' },
+  //     { id: 3, nameClass: '' },
+  //     { id: 4, nameClass: '' },
+  //     { id: 5, nameClass: '' },
+  //     { id: 6, nameClass: '' },
+  //     { id: 7, nameClass: '' },
+  //     { id: 8, nameClass: '' },
+  //     { id: 9, nameClass: '' },
+  //   ];
+  //   this.xoarr = [];
+  // },
 };
 </script>
 <style lang="scss">
