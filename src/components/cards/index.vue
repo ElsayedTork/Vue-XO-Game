@@ -70,12 +70,9 @@ export default {
     addNameClass(index) {
       if (this.xoarr[index] === undefined) {
         this.counter % 2 == 0 ? (this.player = 'x') : (this.player = 'o');
-
         this.playOnce(index);
-        console.log('this.player', this.player);
         this.checkWin(this.player);
         this.counter++;
-        console.log('this.xoarr', this.xoarr);
       }
     },
     playOnce(index) {
@@ -86,9 +83,6 @@ export default {
         this.xoarr[index] = 'o';
         this.sqares[index] = 'o';
       }
-      console.log(this.sqares);
-      //  return sqare;
-      // }
     },
     checkWin(player) {
       if (
@@ -120,11 +114,8 @@ export default {
           this.xoarr[5] == player &&
           this.xoarr[8] == player)
       ) {
-        console.log('win cheacked true');
-        setTimeout(() => (this.winner = player), 1000);
+        setTimeout(() => (this.winner = player), 700);
         player == 'x' ? this.player1Wins++ : this.player2Wins++;
-      } else {
-        console.log('win cheacked false');
       }
     },
     handleContinue() {
