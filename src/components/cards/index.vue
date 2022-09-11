@@ -61,7 +61,6 @@ export default {
       player: null,
       winner: null,
       playWithComputer: true,
-      rundomNum: null,
     };
   },
   components: {
@@ -70,35 +69,12 @@ export default {
   methods: {
     addNameClass(index) {
       if (this.xoarr[index] === undefined) {
-        this.player = 'x';
+        this.counter % 2 == 0 ? (this.player = 'x') : (this.player = 'o');
         this.playOnce(index);
         this.checkWin(this.player);
         this.counter++;
-       // this.rundomNum = Math.floor(Math.random() * 10);
-        // for (let i = 0; i < 5; i++) {
-        //   if (this.xoarr[this.rundomNum] == undefined) {
-        //     console.log('Test');
-        //     this.player = 'o';
-        //     setTimeout(() => this.playOnce(this.rundomNum), 100);
-        //     this.checkWin(this.player);
-        //     break;
-        //   } else {
-        //     this.rundomNum = Math.floor(Math.random() * 10);
-        //   }
-        // }
-
-        // console.log('randomNumber', this.rundomNum);
-        // handleComputerPlayer();
       }
     },
-    handleContinue() {
-      this.counter = 0;
-      this.player = null;
-      this.winner = null;
-      this.sqares = ['', '', '', '', '', '', '', '', ''];
-      this.xoarr = [];
-    },
-
     playOnce(index) {
       if (this.counter % 2 === 0) {
         this.xoarr[index] = 'x';
@@ -107,7 +83,6 @@ export default {
         this.xoarr[index] = 'o';
         this.sqares[index] = 'o';
       }
-      this.counter++;
     },
     checkWin(player) {
       if (
@@ -143,6 +118,14 @@ export default {
         player == 'x' ? this.player1Wins++ : this.player2Wins++;
       }
     },
+    handleContinue() {
+      this.counter = 0;
+      this.player = null;
+      this.winner = null;
+      this.sqares = ['', '', '', '', '', '', '', '', ''];
+      this.xoarr = [];
+    },
+    handleComputerPlayer() {},
   },
 };
 </script>
