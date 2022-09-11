@@ -127,25 +127,14 @@ export default {
         console.log('win cheacked false');
       }
     },
+    handleContinue() {
+      this.counter = 0;
+      this.player = null;
+      this.winner = null;
+      this.sqares = ['', '', '', '', '', '', '', '', ''];
+      this.xoarr = [];
+    },
   },
-
-  // handleContinue() {
-  //   this.counter = 0;
-  //   this.player = null;
-  //   this.winner = null;
-  //   this.sqares = [
-  //     { id: 1, nameClass: 'ْ' },
-  //     { id: 2, nameClass: '' },
-  //     { id: 3, nameClass: '' },
-  //     { id: 4, nameClass: '' },
-  //     { id: 5, nameClass: '' },
-  //     { id: 6, nameClass: '' },
-  //     { id: 7, nameClass: '' },
-  //     { id: 8, nameClass: '' },
-  //     { id: 9, nameClass: '' },
-  //   ];
-  //   this.xoarr = [];
-  // },
 };
 </script>
 <style lang="scss">
