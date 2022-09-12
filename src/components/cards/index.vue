@@ -20,16 +20,10 @@
       :player2Wins="player2Wins"
     ></Info>
 
-    <section v-if="winner == 'x' && counter <= 9" class="tic-game__message">
-      <p>Player 1 Wins</p>
+    <section v-if="textWin !== ''" class="tic-game__message">
+      <p>{{ textWin }}</p>
     </section>
 
-    <section
-      v-else-if="winner == 'o' && counter <= 9"
-      class="tic-game__message"
-    >
-      <p>Player 2 Wins</p>
-    </section>
     <section
       v-else-if="winner == null && counter >= 9"
       class="tic-game__message"
@@ -78,6 +72,19 @@ export default {
       randomNum: null,
       endMatchPlayer1Wins: false,
     };
+  },
+  computed: {
+    textWin() {
+      if (this.winner == 'x' && this.counter <= 9) {
+        return 'Player 1 Wins';
+      } else if (this.winner == 'o' && this.counter <= 9) {
+        return 'Player 2 Wins';
+      } else if (this.winner == null && this.counter >= 9) {
+        return "it's Drow";
+      } else {
+        return '';
+      }
+    },
   },
   components: {
     Info,
