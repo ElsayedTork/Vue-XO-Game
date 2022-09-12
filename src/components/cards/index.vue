@@ -1,67 +1,58 @@
 <template>
   <div class="tic-game container">
-    <form @submit.prevent="playWith">
-      <label class="text-center">Yo Want To Play With</label>
-      <select
-        class="form-select"
-        aria-label="Default select example"
-        v-model="playingWith"
+    <section v-if="playingWith == ''">
+      <option-play @play-with="playWith"></option-play>
+    </section>
+    <section v-else>
+      <Info
+        :counter="counter"
+        :player1Wins="player1Wins"
+        :player2Wins="player2Wins"
+      ></Info>
+
+      <section v-if="textWin !== ''" class="tic-game__message">
+        <p>{{ textWin }}</p>
+      </section>
+
+      <section
+        v-else-if="winner == null && counter >= 9"
+        class="tic-game__message"
       >
-        <option value="Computer">With Computer</option>
-        <option value="Players">Two Player</option>
-      </select>
-      <div>
-        <button>confirm</button>
-      </div>
-    </form>
-    <Info
-      :counter="counter"
-      :player1Wins="player1Wins"
-      :player2Wins="player2Wins"
-    ></Info>
+        <p>It's Drow</p>
+      </section>
 
-    <section v-if="textWin !== ''" class="tic-game__message">
-      <p>{{ textWin }}</p>
-    </section>
-
-    <section
-      v-else-if="winner == null && counter >= 9"
-      class="tic-game__message"
-    >
-      <p>It's Drow</p>
-    </section>
-
-    <section class="tic-game__container" v-else>
-      <div class="row tic-game__container__cells">
-        <div
-          class="col-4"
-          v-for="(sqare, index) in sqares"
-          :key="index"
-          @click="playGame(index)"
-        >
-          {{ sqare }}
+      <section class="tic-game__container" v-else>
+        <div class="row tic-game__container__cells">
+          <div
+            class="col-4"
+            v-for="(sqare, index) in sqares"
+            :key="index"
+            @click="playGame(index)"
+          >
+            {{ sqare }}
+          </div>
         </div>
+      </section>
+      <div class="text-center mt-5">
+        <button
+          v-if="
+            winner == 'x' || winner == 'o' || (winner == null && counter >= 9)
+          "
+          class="tic-game__btn-continue"
+          @click="handleContinue"
+        >
+          Continue
+        </button>
       </div>
     </section>
-    <div class="text-center mt-5">
-      <button
-        v-if="
-          winner == 'x' || winner == 'o' || (winner == null && counter >= 9)
-        "
-        class="tic-game__btn-continue"
-        @click="handleContinue"
-      >
-        Continue
-      </button>
-    </div>
   </div>
 </template>
 <script>
 import Info from './info.vue';
+import optionPlay from './optionPlay.vue';
 export default {
   data() {
     return {
-      playingWith: '',
       counter: 0,
       player1Wins: 0,
       player2Wins: 0,
@@ -71,6 +62,7 @@ export default {
       winner: null,
       randomNum: null,
       endMatchPlayer1Wins: false,
+      playingWith: '',
     };
   },
   computed: {
@@ -88,17 +80,16 @@ export default {
   },
   components: {
     Info,
+    optionPlay,
   },
   methods: {
-    playWith() {
-      console.log(this.playingWith);
+    playWith(optionToPlay) {
+      this.playingWith = optionToPlay;
     },
     playGame(index) {
       if (this.playingWith == 'Players') {
         this.addNameClass(index);
-        console.log('Playersssss');
-      } else {
-        console.log('Computer ssss');
+      } else if (this.playingWith == 'Computer') {
         this.computerPlayer(index);
       }
     },
@@ -123,12 +114,9 @@ export default {
                 break;
               }
             }
-            console.log('this.randomNum', this.randomNum);
             this.playOnce(this.randomNum);
-            // console.log('this.randomNum', this.randomNum);
             this.checkWin(this.player);
             this.counter++;
-            console.log(this.xoarr);
           }
         }, 500);
       }
