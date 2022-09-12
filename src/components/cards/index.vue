@@ -109,26 +109,28 @@ export default {
         this.checkWin(this.player);
         this.counter++;
         //computer turn
-        if (this.endMatchPlayer1Wins == false) {
-          this.player = this.player === 'x' ? 'o' : 'x';
-          this.randomNumber();
-          for (let i = 0; i < 6; i++) {
-            if (
-              this.xoarr[this.randomNum] == 'x' ||
-              this.xoarr[this.randomNum] == 'o'
-            ) {
-              this.randomNumber();
-            } else {
-              break;
+        setTimeout(() => {
+          if (this.endMatchPlayer1Wins == false) {
+            this.player = this.player === 'x' ? 'o' : 'x';
+            this.randomNumber();
+            for (let i = 0; i < 6; i++) {
+              if (
+                this.xoarr[this.randomNum] == 'x' ||
+                this.xoarr[this.randomNum] == 'o'
+              ) {
+                this.randomNumber();
+              } else {
+                break;
+              }
             }
+            console.log('this.randomNum', this.randomNum);
+            this.playOnce(this.randomNum);
+            // console.log('this.randomNum', this.randomNum);
+            this.checkWin(this.player);
+            this.counter++;
+            console.log(this.xoarr);
           }
-          console.log('this.randomNum', this.randomNum);
-          this.playOnce(this.randomNum);
-          // console.log('this.randomNum', this.randomNum);
-          this.checkWin(this.player);
-          this.counter++;
-          console.log(this.xoarr);
-        }
+        }, 500);
       }
     },
     addNameClass(index) {
@@ -178,7 +180,7 @@ export default {
           this.xoarr[5] == player &&
           this.xoarr[8] == player)
       ) {
-        setTimeout(() => (this.winner = player), 700);
+        this.winner = player;
         player == 'x' ? this.player1Wins++ : this.player2Wins++;
       }
       if (this.winner == 'x') {
